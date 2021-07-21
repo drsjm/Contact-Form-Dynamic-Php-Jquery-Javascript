@@ -3,12 +3,12 @@
 if ( !isset($_POST) || empty($_POST) ) {
 	$status = array(
 		'status'  => 'Error',
-		'message' => '<p>Ocorreu um erro inesperado! Acesso não permitido! Tente novamente por favor.</p>'
+		'message' => '<p>Error! Not allowed.</p>'
 	);
 	echo json_encode($status);
 	die();
 
-	header("location: 404");
+	header("location: /404");
 	die();
 }
 
@@ -43,51 +43,51 @@ if ( isset($_POST['action']) && $_POST['action'] == 'Send Email To Business Owne
 	if ( !isset($name) || empty($name) ) {
 		$status = array(
 			'status'  => 'Error',
-			'message' => '<p>Insira um nome válido, por favor.</p>',
+			'message' => '<p>Enter a valid name please.</p>',
 		);
 		die();
 	}
 	if ( !isset($email) || empty($email) ) {
 		$status = array(
 			'status'  => 'Error',
-			'message' => '<p>Insira um endereço de e-mail válido, por favor.</p>',
+			'message' => '<p>Enter a valid email address please.</p>',
 		);
 		die();
 	}
 	if ( !isset($message) || empty($message) ) {
 		$status = array(
 			'status'  => 'Error',
-			'message' => '<p>Insira uma mensagem válida, por favor.</p>',
+			'message' => '<p>Enter a message please.</p>',
 		);
 		die();
 	}
 	// VALIDATION //
 
 	$to = "your@email.com";
-	$subject = "Your subject title";
+	$subject = "Your subject";
 
 		$message = "
 			<html>
 				<head>
-					<title>Recebeu uma nova mensagem</title>
+					<title>You have a new message</title>
 				</head>
 				<body>
-					<p>Olá ".$to.",</p>
+					<p>Hi ".$to.",</p>
 					<p>
-						Recebeu uma nova mensagem através do formulário de contacto existente no seu website Ok Eu Resolvo!
+						You have a new message!
 					</p>
-					<p>Dados da Mensagem:</p>
+					<p>Message Details:</p>
 					<p>
-						De: ".$name."
+						From: ".$name."
 						<br>
 						<br>
 						E-mail: ".$email."
 						<br>
 						<br>
-						Telefone: ".$phone."
+						Phone: ".$phone."
 						<br>
 						<br>
-						Mensagem:
+						Message:
 						<br>
 						".nl2br($message)."
 					</p>
@@ -100,14 +100,14 @@ if ( isset($_POST['action']) && $_POST['action'] == 'Send Email To Business Owne
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 		// More headers
-		$headers .= 'From: no-reply@your-website-domain-name.com' . "\r\n";
+		$headers .= 'From: <no-reply@your-domain.com>' . "\r\n";
 		//$headers .= 'Cc: email@dominio.com' . "\r\n";
 
-		if ( mail($to,$message,$headers) ) {
+		if ( mail($to,$subject, $message,$headers) ) {
 			// SUCCESS MESSAGE --> EMAIL SENT
 			$status = array(
 				"status"  => 'success',
-				"message" => 'Obrigado por nos contactar. Tentaremos responder o mais breve possível. Obrigado.'
+				"message" => 'Message sent with success!'
 			);
 			echo json_encode($status);
 			die();
@@ -116,7 +116,7 @@ if ( isset($_POST['action']) && $_POST['action'] == 'Send Email To Business Owne
 			// ERROR MESSAGE --> EMAIL NOT SENT
 			$status = array(
 				"status"  => 'error',
-				"message" => 'Foi detetado um erro inesperado! Atualize a página e tente novamente, por favor.'
+				"message" => 'It was not possible to send your message!'
 			);
 			echo json_encode($status);
 			die();
@@ -126,7 +126,7 @@ if ( isset($_POST['action']) && $_POST['action'] == 'Send Email To Business Owne
 
 	$status = array(
 		'status'  => 'Error',
-		'message' => '<p>Ocorreu um erro inesperado! Tente novamente por favor.</p>',
+		'message' => '<p>Something went wrong! Message not sent! Please try again.</p>',
 	);
 	
 	echo json_encode($status);
